@@ -133,12 +133,6 @@ LogisticFunction const & NeuralNetwork::getActivationFuncPrime() const
 }
 
 
-NeuralNetwork::Network const & NeuralNetwork::getNetwork() const
-{
-    return m_network;
-}
-
-
 void NeuralNetwork::setSeed(Seed seed)
 {
     m_seed = seed;
@@ -549,6 +543,48 @@ NeuralNetwork::Weights NeuralNetwork::costDerivative(
     }
 
     return cd;
+}
+
+
+
+NeuralNetwork::Network const & NeuralNetwork::getNetwork() const
+{
+    return m_network;
+}
+
+Weight NeuralNetwork::getWeight(std::size_t l, std::size_t i, std::size_t j)
+{
+    return m_network.weights[l](i, j);
+}
+
+Weight NeuralNetwork::getBias(std::size_t l, std::size_t i)
+{
+    return m_network.biases[l][i];
+}
+
+void NeuralNetwork::setWeight(std::size_t l, std::size_t i, std::size_t j, Weight w)
+{
+    m_network.weights[l](i, j) = w;
+}
+
+void NeuralNetwork::setBias(std::size_t l, std::size_t i, Weight bias)
+{
+    m_network.biases[l][i] = bias;
+}
+
+void NeuralNetwork::reshape(Shape shape)
+{
+    m_shape = shape;
+
+    auto nlayers = shape.size();
+
+    for(auto layer = 0u; layer < nlayers - 1; ++layer)
+    {
+        auto c = shape[layer];
+        auto r = shape[layer+1];
+        m_network.weights.push_back(Weights(r, c));
+        m_network.biases.push_back(Weights(r, 1));
+    }
 }
 
 }

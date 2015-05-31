@@ -2,6 +2,7 @@
 #define NEURO_EVOLUTION_FUNCTIONS_HPP
 
 #include <cmath>
+#include <string>
 
 #include <types.hpp>
 
@@ -9,30 +10,28 @@
 namespace NeuroEvolution {
 
 /** Sigmoid activation function */
-Weight sigmoid(Weight x)
-{
-    return 1.0 / (1.0 + std::exp(-x));
-}
+Weight sigmoid(Weight x);
 
 /** Sigmoid activation function derivative */
-Weight sigmoid_prime(Weight x)
-{
-    Weight s = sigmoid(x);
-    return s * (1.0 - s);
-}
+Weight sigmoid_prime(Weight x);
 
 /** Hyperbolic tangent activation function */
-Weight hyperbolic_tangent(Weight x)
-{
-    return std::tanh(x);
-}
+Weight hyperbolic_tangent(Weight x);
 
 /** Hyperbolic tangent activation function derivative */
-Weight hyperbolic_tangent_prime(Weight x)
-{
-    return 1.0 - x * x;
-}
+Weight hyperbolic_tangent_prime(Weight x);
+
+
+/** Get the string representation of a logistic function */
+char const * funcToStr(LogisticFunctionType func);
+
+/** Get the string representation of a logistic function */
+char const * funcToStr(LogisticFunction func);
+
+/** Get a logistic function from its string representation */
+LogisticFunction strToFunc(std::string const & fname);
 
 }
+
 
 #endif //NEURO_EVOLUTION_FUNCTIONS_HPP

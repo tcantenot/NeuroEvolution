@@ -85,13 +85,10 @@ class NeuralNetwork
         std::vector<Weight> compute(std::vector<Weight> const & input);
 
 
-    private:
+    public:
 
         //! Weight matrix type
         using Weights = Matrix<Weight>;
-
-        //! Activation vector type (matrix with one column <-> vector)
-        using Activations = Weights;
 
 
         /** Internal neural network */
@@ -114,6 +111,29 @@ class NeuralNetwork
         };
 
 
+        // Get the internal network of the NN
+        Network const & getNetwork() const;
+
+        // Get the weight between neuron j in the layer l and neuron i in layer l-1
+        Weight getWeight(std::size_t l, std::size_t i, std::size_t j);
+
+        // Get the bias of neuron i in the layer l
+        Weight getBias(std::size_t l, std::size_t i);
+
+        // Set the weight between neuron j in the layer l and neuron i in layer l-1
+        void setWeight(std::size_t l, std::size_t i, std::size_t j, Weight w);
+
+        // Set the bias of neuron i in the layer l
+        void setBias(std::size_t l, std::size_t i, Weight bias);
+
+        // Reshape the neural network
+        void reshape(Shape shape);
+
+
+    private:
+        //! Activation vector type (matrix with one column <-> vector)
+        using Activations = Weights;
+
         // Feed forward pass
         Activations feedForward(
             std::vector<Weight> const & inputData,
@@ -128,6 +148,7 @@ class NeuralNetwork
             std::size_t miniBatchSize
         );
 
+
         using TrainingDataIterator = std::vector<TrainingData>::iterator;
 
         // Update NN with a random mini batch of training data
@@ -136,6 +157,7 @@ class NeuralNetwork
             TrainingDataIterator const & end,
             std::size_t m
         );
+
 
         using Nabla = Network;
 
@@ -150,13 +172,6 @@ class NeuralNetwork
             Activations const & activations,
             std::vector<Weight> const & expectedOutput
         );
-
-        // Get the internal network of the NN
-        Network const & getNetwork() const;
-
-
-        // Output stream operator
-        friend std::ostream & operator<<(std::ostream &, NeuralNetwork const &);
 
 
     private:

@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <vector>
 
 
 namespace NeuroEvolution {
@@ -20,6 +21,7 @@ using LearningRate = Weight;
 using Momentum = Weight;
 
 //! Neural network logistic function type
+using LogisticFunctionType = Weight(*)(Weight);
 using LogisticFunction = std::function<Weight(Weight)>;
 
 

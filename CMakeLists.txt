@@ -193,14 +193,17 @@ set(NEURO_EVOLUTION_HEADERS
     ${NEURO_EVOLUTION_INCLUDE_DIR}/matrix.hpp
     ${NEURO_EVOLUTION_INCLUDE_DIR}/neural_network.hpp
     ${NEURO_EVOLUTION_INCLUDE_DIR}/neural_network_synthetizer.hpp
+    ${NEURO_EVOLUTION_INCLUDE_DIR}/serialization.hpp
     ${NEURO_EVOLUTION_INCLUDE_DIR}/types.hpp
 )
 
 # Source files
 set(NEURO_EVOLUTION_SOURCES
+    ${NEURO_EVOLUTION_SOURCE_DIR}/functions.cpp
     ${NEURO_EVOLUTION_SOURCE_DIR}/io_utils.cpp
     ${NEURO_EVOLUTION_SOURCE_DIR}/neural_network.cpp
     ${NEURO_EVOLUTION_SOURCE_DIR}/neural_network_synthetizer.cpp
+    ${NEURO_EVOLUTION_SOURCE_DIR}/serialization.cpp
 )
 
 # Static library
