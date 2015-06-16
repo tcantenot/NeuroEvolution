@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 # Some useful macros
-include(${CMAKE_SOURCE_DIR}/cmake/macros.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/macros.cmake)
 
 ################################################################################
 #                            GLOBAL CONFIGURATION                              #
@@ -34,7 +34,7 @@ set(NEURO_EVOLUTION_VERSION
 )
 
 # Configuration file
-include(${CMAKE_SOURCE_DIR}/cmake/config.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.cmake)
 
 # Static library name
 set(NEURO_EVOLUTION_STATIC_LIBRARY_NAME NeuroEvolutionLib)
@@ -43,7 +43,7 @@ set(NEURO_EVOLUTION_STATIC_LIBRARY_NAME NeuroEvolutionLib)
 set(NEURO_EVOLUTION_EXECUTABLE_NAME NeuroEvolution)
 
 # Binary directory
-set(NEURO_EVOLUTION_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
+set(NEURO_EVOLUTION_BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
 
 
 ################################################################################
@@ -150,30 +150,6 @@ else()
     return()
 
 endif()
-
-
-################################################################################
-#                                 CUSTOM COMMANDS                              #
-################################################################################
-
-if(NEURO_EVOLUTION_OS_LINUX)
-
-    # Clean up all generated files
-    add_custom_target(
-        trash
-        COMMAND rm -r ${CMAKE_SOURCE_DIR}/bin/* ${CMAKE_SOURCE_DIR}/build/*
-        COMMENT "Deleting generated files"
-    )
-
-    # Delete generated files and reset project settings
-    add_custom_target(
-        reset
-        COMMAND make trash\; cmake ..
-        COMMENT "Resetting project settings"
-    )
-
-endif()
-
 
 ################################################################################
 #                                   EXECUTABLE                                 #
