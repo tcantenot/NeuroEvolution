@@ -1,3 +1,3 @@
-# Parallel Algorithm & Parallel Algorithm - Final project
+# Neuro evolution
 
-Training of neural networks in parallel with a genetic algorithm using MPI and OpenMP.
+Small neural network framework with backpropagation.
