@@ -552,12 +552,12 @@ NeuralNetwork::Network const & NeuralNetwork::getNetwork() const
     return m_network;
 }
 
-Weight NeuralNetwork::getWeight(std::size_t l, std::size_t i, std::size_t j)
+Weight NeuralNetwork::getWeight(std::size_t l, std::size_t i, std::size_t j) const
 {
     return m_network.weights[l](i, j);
 }
 
-Weight NeuralNetwork::getBias(std::size_t l, std::size_t i)
+Weight NeuralNetwork::getBias(std::size_t l, std::size_t i) const
 {
     return m_network.biases[l][i];
 }
