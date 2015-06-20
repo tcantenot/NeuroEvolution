@@ -280,7 +280,7 @@ void NeuralNetwork::train(
     this->SGD(trainingData, epochs, miniBatchSize);
 }
 
-std::vector<Weight> NeuralNetwork::compute(std::vector<Weight> const & input)
+std::vector<Weight> NeuralNetwork::compute(std::vector<Weight> const & input) const
 {
     Activations activations = this->feedForward(input);
     assert(activations.ncols() == 1);
@@ -298,7 +298,7 @@ NeuralNetwork::Activations NeuralNetwork::feedForward(
     std::vector<Weight> const & input,
     std::vector<Activations> * activationsList,
     std::vector<Weights> * weightedInputsList
-)
+) const
 {
     // Input layer -> activations = inputs
     Activations activations(input.size(), 1);

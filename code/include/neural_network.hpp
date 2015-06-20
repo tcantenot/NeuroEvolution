@@ -82,7 +82,7 @@ class NeuralNetwork
         );
 
         // Compute
-        std::vector<Weight> compute(std::vector<Weight> const & input);
+        std::vector<Weight> compute(std::vector<Weight> const & input) const;
 
 
     public:
@@ -139,7 +139,7 @@ class NeuralNetwork
             std::vector<Weight> const & inputData,
             std::vector<Activations> * activationsList = nullptr,
             std::vector<Weights> * weightedInputsList = nullptr
-        );
+        ) const;
 
         // Stochastic gradient descent
         void SGD(
