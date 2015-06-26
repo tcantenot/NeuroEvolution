@@ -83,24 +83,28 @@ uint32_t Matrix<T>::ncols() const
 template <typename T>
 T & Matrix<T>::operator[](uint32_t n)
 {
+    assert(n < m_ncols * m_nrows);
     return m[n];
 }
 
 template <typename T>
 T Matrix<T>::operator[](uint32_t n) const
 {
+    assert(n < m_ncols * m_nrows);
     return m[n];
 }
 
 template <typename T>
 T & Matrix<T>::operator()(uint32_t r, uint32_t c)
 {
+    assert(r * m_ncols + c < m_ncols * m_nrows);
     return m[r * m_ncols + c];
 }
 
 template <typename T>
 T Matrix<T>::operator()(uint32_t r, uint32_t c) const
 {
+    assert(r * m_ncols + c < m_ncols * m_nrows);
     return m[r * m_ncols + c];
 }
 

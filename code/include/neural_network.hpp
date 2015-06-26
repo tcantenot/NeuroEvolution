@@ -114,13 +114,13 @@ class NeuralNetwork
         // Get the internal network of the NN
         Network const & getNetwork() const;
 
-        // Get the weight between neuron j in the layer l and neuron i in layer l-1
+        // Get the weight between neuron j in the layer l+1 and neuron i in layer l
         Weight getWeight(std::size_t l, std::size_t i, std::size_t j) const;
 
         // Get the bias of neuron i in the layer l
         Weight getBias(std::size_t l, std::size_t i) const;
 
-        // Set the weight between neuron j in the layer l and neuron i in layer l-1
+        // Set the weight between neuron j in the layer l+1 and neuron i in layer l
         void setWeight(std::size_t l, std::size_t i, std::size_t j, Weight w);
 
         // Set the bias of neuron i in the layer l

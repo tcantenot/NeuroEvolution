@@ -253,6 +253,7 @@ bool NeuralNetwork::synthetize()
         {
             for(auto k = 0u; k < previousNbNeurons; ++k)
             {
+                // j and k are inverted
                 weights(j, k) = random();
             }
 
@@ -554,7 +555,7 @@ NeuralNetwork::Network const & NeuralNetwork::getNetwork() const
 
 Weight NeuralNetwork::getWeight(std::size_t l, std::size_t i, std::size_t j) const
 {
-    return m_network.weights[l](i, j);
+    return m_network.weights[l](j, i);
 }
 
 Weight NeuralNetwork::getBias(std::size_t l, std::size_t i) const
@@ -564,7 +565,7 @@ Weight NeuralNetwork::getBias(std::size_t l, std::size_t i) const
 
 void NeuralNetwork::setWeight(std::size_t l, std::size_t i, std::size_t j, Weight w)
 {
-    m_network.weights[l](i, j) = w;
+    m_network.weights[l](j, i) = w;
 }
 
 void NeuralNetwork::setBias(std::size_t l, std::size_t i, Weight bias)
