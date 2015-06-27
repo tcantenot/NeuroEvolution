@@ -253,7 +253,7 @@ bool NeuralNetwork::synthetize()
         {
             for(auto k = 0u; k < previousNbNeurons; ++k)
             {
-                // j and k are inverted
+                // /!\ j and k are inverted for computation ease
                 weights(j, k) = random();
             }
 
@@ -547,12 +547,6 @@ NeuralNetwork::Weights NeuralNetwork::costDerivative(
 }
 
 
-
-NeuralNetwork::Network const & NeuralNetwork::getNetwork() const
-{
-    return m_network;
-}
-
 Weight NeuralNetwork::getWeight(std::size_t l, std::size_t i, std::size_t j) const
 {
     return m_network.weights[l](j, i);
@@ -578,6 +572,11 @@ void NeuralNetwork::reshape(Shape shape)
     m_shape = shape;
 
     auto nlayers = shape.size();
+
+    m_network.weights.clear();
+    m_network.biases.clear();
+    m_network.weights.reserve(nlayers-1);
+    m_network.biases.reserve(nlayers-1);
 
     for(auto layer = 0u; layer < nlayers - 1; ++layer)
     {

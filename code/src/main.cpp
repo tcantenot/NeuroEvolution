@@ -13,7 +13,7 @@ using namespace NeuroEvolution;
 void test_xor(NeuralNetwork & nn);
 void test_or(NeuralNetwork & nn);
 void test_serialization(NeuralNetwork & nn);
-void benchmark_xor(NeuralNetwork && nn);
+void benchmark_xor(NeuralNetwork & nn);
 
 int main(int, char const **)
 {
@@ -41,8 +41,8 @@ int main(int, char const **)
 
     std::cout << nn << std::endl;
 
-    //test_xor(nn);
-    //test_or(nn);
+    test_xor(nn);
+    test_or(nn);
     //benchmark_xor(nn);
     test_serialization(nn);
 
@@ -103,7 +103,7 @@ void test_or(NeuralNetwork & nn)
     std::cout << "    (1, 1) = " << nn.compute({1, 1})[0] << std::endl;
 }
 
-void benchmark_xor(NeuralNetwork && nn)
+void benchmark_xor(NeuralNetwork & nn)
 {
     NeuralNetworkSynthetizer nns;
 
@@ -228,6 +228,33 @@ void test_serialization(NeuralNetwork & nn)
     assert(eq(reloaded.getMaxStartWeight(), nn.getMaxStartWeight()));
 
     // Network
+    {
+        auto const & shape = nn.getShape();
+        auto nlayers = shape.size();
+
+        assert(reloaded.getShape().size() == nlayers);
+
+        for(auto l = 0u; l < nlayers - 1; ++l)
+        {
+            auto I = shape[l];
+            auto J = shape[l+1];
+
+            assert(reloaded.getShape()[l] == I);
+            assert(reloaded.getShape()[l+1] == J);
+
+            for(auto j = 0u; j < J; ++j)
+            {
+                for(auto i = 0u; i < I; ++i)
+                {
+                    assert(eq(nn.getWeight(l, i, j), reloaded.getWeight(l, i, j)));
+                }
+
+                assert(eq(nn.getBias(l, j), reloaded.getBias(l, j)));
+            }
+        }
+    }
+
+#if 0
     NeuralNetwork::Network const & refNetwork = nn.getNetwork();
     NeuralNetwork::Network const & network = reloaded.getNetwork();
 
@@ -261,9 +288,10 @@ void test_serialization(NeuralNetwork & nn)
             assert(eq(b[i], refB[i]));
         }
     }
+#endif
 
-    nn.setWeight(1, 0, 2, 42);
-    nn.setWeight(0, 2, 1, 1337);
+    nn.setWeight(1, 2, 0, 42);
+    nn.setWeight(0, 1, 2, 1337);
     nn.setBias(0, 1, 6);
     std::cout << std::endl;
     std::cout << nn << std::endl;

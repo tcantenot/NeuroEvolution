@@ -110,20 +110,16 @@ class NeuralNetwork
             std::vector<Weights> biases;
         };
 
-
-        // Get the internal network of the NN
-        Network const & getNetwork() const;
-
         // Get the weight between neuron j in the layer l+1 and neuron i in layer l
         Weight getWeight(std::size_t l, std::size_t i, std::size_t j) const;
 
-        // Get the bias of neuron i in the layer l
+        // Get the bias of neuron i in the layer l+1
         Weight getBias(std::size_t l, std::size_t i) const;
 
         // Set the weight between neuron j in the layer l+1 and neuron i in layer l
         void setWeight(std::size_t l, std::size_t i, std::size_t j, Weight w);
 
-        // Set the bias of neuron i in the layer l
+        // Set the bias of neuron i in the layer l+1
         void setBias(std::size_t l, std::size_t i, Weight bias);
 
         // Reshape the neural network

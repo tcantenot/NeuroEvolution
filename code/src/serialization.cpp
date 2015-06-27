@@ -43,30 +43,32 @@ bool saveToFile(NeuralNetwork const & nn, std::string const & filename)
     f << std::endl;
 
     // Network
-    NeuralNetwork::Network const & network = nn.getNetwork();
-    assert(network.weights.size() == network.biases.size());
-    for(auto layer = 0u; layer < network.weights.size(); ++layer)
+    auto const & nnshape = nn.getShape();
+    auto nlayers = nnshape.size();
+    for(auto l = 0u; l < nlayers-1; ++l)
     {
+        auto I = nnshape[l];
+        auto J = nnshape[l+1];
+
         // Weights
-        auto const & w = network.weights[layer];
-        for(auto i = 0u; i < w.nrows(); ++i)
+        for(auto j = 0u; j < J; ++j)
         {
-            for(auto j = 0u; j < w.ncols(); ++j)
+            for(auto i = 0u; i < I; ++i)
             {
-                f << w(i, j) << (j != w.ncols() - 1 ? " " : "");
+                f << nn.getWeight(l, i, j) << (i != I - 1 ? " " : "");
             }
             f << std::endl;
         }
 
+        f << std::endl;
+
         // Biases
-        auto const & b = network.biases[layer];
-        for(auto i = 0u; i < b.nrows(); ++i)
+        for(auto j = 0u; j < J; ++j)
         {
-            assert(b.ncols() == 1);
-            f << b(i, 0) << std::endl;
+            f << nn.getBias(l, j) << std::endl;
         }
 
-        if(layer != network.weights.size() - 1) f << std::endl;
+        if(l != nlayers - 2) f << std::endl << std::endl;
     }
 
     return true;
@@ -177,19 +179,21 @@ bool loadFromFile(std::string const & filename, NeuralNetwork & nn)
     NeuralNetwork::Shape const & shape = nn.getShape();
     nn.reshape(shape);
 
-    for(auto l = 0u; l < shape.size() - 1; ++l)
+    auto const & nnshape = nn.getShape();
+    auto nlayers = nnshape.size();
+    for(auto l = 0u; l < nlayers-1; ++l)
     {
-        auto c = shape[l];
-        auto r = shape[l+1];
+        auto I = nnshape[l];
+        auto J = nnshape[l+1];
 
         // Weights
-        for(auto i = 0u; i < r; ++i)
+        for(auto j = 0u; j < J; ++j)
         {
             if(std::getline(f, line))
             {
                 std::istringstream iss(line);
                 Weight w;
-                for(auto j = 0u; j < c; ++j)
+                for(auto i = 0u; i < I; ++i)
                 {
                     iss >> w;
                     nn.setWeight(l, i, j, w);
@@ -197,20 +201,26 @@ bool loadFromFile(std::string const & filename, NeuralNetwork & nn)
             }
         }
 
+        // Empty line
+        std::getline(f, line);
+
         // Biases
-        for(auto i = 0u; i < r; ++i)
+        for(auto j = 0u; j < J; ++j)
         {
             if(std::getline(f, line))
             {
                 std::istringstream iss(line);
                 Weight b;
                 iss >> b;
-                nn.setBias(l, i, b);
+                nn.setBias(l, j, b);
             }
         }
 
         // Empty line
-        if(l != shape.size() - 2) std::getline(f, line);
+        std::getline(f, line);
+
+        // Empty line
+        if(l != nlayers - 2) std::getline(f, line);
     }
 
     return true;

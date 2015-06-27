@@ -8,6 +8,42 @@
 
 namespace NeuroEvolution {
 
+namespace {
+
+void printNeuralNetwork(std::ostream & os, NeuralNetwork const & nn)
+{
+    auto const & shape = nn.getShape();
+    auto nlayers = shape.size();
+
+    for(auto l = 0u; l < nlayers - 1; ++l)
+    {
+        os << "  Layer " << l<< " { " << std::endl << std::endl;
+
+        auto I = shape[l];
+        auto J = shape[l+1];
+
+        for(auto j = 0u; j < J; ++j)
+        {
+            os << "    Neuron " << j << " { " << std::endl;
+
+            for(auto i = 0u; i < I; ++i)
+            {
+                Weight w = nn.getWeight(l, i, j);
+                os << "      Weight " << i << ": " << w << std::endl;
+            }
+
+            os << "      Bias: " << nn.getBias(l, j) << std::endl;
+            os << "    }" << std::endl << std::endl;
+        }
+
+        os << "  }" << std::endl;
+
+        if(l != nlayers - 2) os << std::endl;
+    }
+}
+
+} // Anonymous namespace
+
 std::ostream & operator<<(std::ostream & os, NeuralNetwork const & nn)
 {
     os << "Neural network { " << std::endl << std::endl;
@@ -27,41 +63,9 @@ std::ostream & operator<<(std::ostream & os, NeuralNetwork const & nn)
     os << "  " << "Min start weight: " << nn.getMinStartWeight() << std::endl;
     os << "  " << "Max start weight: " << nn.getMaxStartWeight() << std::endl;
     os << std::endl;
-    os << nn.getNetwork();
+    printNeuralNetwork(os, nn);
     os << std::endl;
     os << "}";
-    return os;
-}
-
-
-std::ostream & operator<<(std::ostream & os, NeuralNetwork::Network const & network)
-{
-    for(auto i = 0u; i < network.weights.size(); ++i)
-    {
-        auto const & weights = network.weights[i];
-        auto const & biases  = network.biases[i];
-
-        os << "  Layer " << i << " { " << std::endl << std::endl;
-
-        for(auto r = 0u; r < weights.nrows(); ++r)
-        {
-            os << "    Neuron " << r << " { " << std::endl;
-
-            for(auto c = 0u; c < weights.ncols(); ++c)
-            {
-                Weight w = weights(r, c);
-                os << "      Weight " << c << ": " << w << std::endl;
-            }
-
-            os << "      Bias: " << biases(r, 0) << std::endl;
-            os << "    }" << std::endl << std::endl;
-        }
-
-        os << "  }" << std::endl;
-
-        if(i != network.weights.size() - 1) os << std::endl;
-    }
-
     return os;
 }
 
