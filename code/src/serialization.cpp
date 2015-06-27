@@ -31,6 +31,9 @@ bool saveToFile(NeuralNetwork const & nn, std::string const & filename)
     // Activation function
     f << funcToStr(nn.getActivationFunc()) << std::endl;
 
+    // Activation function prime
+    f << funcToStr(nn.getActivationFuncPrime()) << std::endl;
+
     // Random seed
     f << nn.getSeed() << std::endl;
 
@@ -140,6 +143,13 @@ bool loadFromFile(std::string const & filename, NeuralNetwork & nn)
     {
         LogisticFunction func = strToFunc(line);
         nn.setActivationFunc(func);
+    }
+
+    // Activation function prime
+    if(std::getline(f, line))
+    {
+        LogisticFunction funcPrime = strToFunc(line);
+        nn.setActivationFuncPrime(funcPrime);
     }
 
     // Random seed

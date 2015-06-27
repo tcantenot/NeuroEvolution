@@ -56,12 +56,13 @@ std::ostream & operator<<(std::ostream & os, NeuralNetwork const & nn)
     }
     os << "]" << std::endl;
 
-    os << "  " << "Learning rate:    " << nn.getLearningRate() << std::endl;
-    os << "  " << "Momentum:         " << nn.getMomentum() << std::endl;
-    os << "  " << "Activation func:  " << funcToStr(nn.getActivationFunc()) << std::endl;
-    os << "  " << "Random seed:      " << nn.getSeed() << std::endl;
-    os << "  " << "Min start weight: " << nn.getMinStartWeight() << std::endl;
-    os << "  " << "Max start weight: " << nn.getMaxStartWeight() << std::endl;
+    os << "  " << "Learning rate:          " << nn.getLearningRate() << std::endl;
+    os << "  " << "Momentum:               " << nn.getMomentum() << std::endl;
+    os << "  " << "Activation func:        " << funcToStr(nn.getActivationFunc()) << std::endl;
+    os << "  " << "Activation func prime:  " << funcToStr(nn.getActivationFuncPrime()) << std::endl;
+    os << "  " << "Random seed:            " << nn.getSeed() << std::endl;
+    os << "  " << "Min start weight:       " << nn.getMinStartWeight() << std::endl;
+    os << "  " << "Max start weight:       " << nn.getMaxStartWeight() << std::endl;
     os << std::endl;
     printNeuralNetwork(os, nn);
     os << std::endl;
