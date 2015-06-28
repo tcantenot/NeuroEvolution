@@ -67,7 +67,7 @@ if(NEURO_EVOLUTION_COMPILER_GCC OR NEURO_EVOLUTION_COMPILER_CLANG)
     # https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Dialect-Options.html
     # http://stackoverflow.com/a/9862800
     set(CXX_BASE_FLAGS
-        "-W -Wall -Wextra -Weffc++ -pedantic"
+        "-W -Wall -Wextra -pedantic"
         "-Wold-style-cast -Wparentheses -Wlogical-op -Woverloaded-virtual"
         "-Wfloat-equal -Wpointer-arith -Wcast-align -Wcast-qual"
         "-Winit-self -Wwrite-strings -Wstrict-null-sentinel"
@@ -76,6 +76,7 @@ if(NEURO_EVOLUTION_COMPILER_GCC OR NEURO_EVOLUTION_COMPILER_CLANG)
         "-Wdisabled-optimization"
         "-Wnoexcept"
 
+        #"-Weffc++"
         #"-Wshadow"
         #"-Wsign-conversion"
         #"-Wconversion"
@@ -86,17 +87,17 @@ if(NEURO_EVOLUTION_COMPILER_GCC OR NEURO_EVOLUTION_COMPILER_CLANG)
     string(REGEX REPLACE ";" " " CXX_BASE_FLAGS "${CXX_BASE_FLAGS}")
 
     # Release mode
-    set(CXX_FLAGS_RELEASE "-Werror ${CXX_BASE_FLAGS}")
+    set(CXX_FLAGS_RELEASE "-O3 -Werror ${CXX_BASE_FLAGS}")
     set(CMAKE_CXX_FLAGS_RELEASE "${CXX_DEFINES} ${CXX_FLAGS_RELEASE}")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CXX_FLAGS_RELEASE}")
+    set(CMAKE_CXX_FLAGS_RELEASE ${CXX_FLAGS_RELEASE})
 
     # Debug mode
-    set(CXX_FLAGS_DEBUG ${CXX_BASE_FLAGS})
+    set(CXX_FLAGS_DEBUG "-O0 -g ${CXX_BASE_FLAGS}")
     set(CMAKE_CXX_FLAGS_DEBUG "${CXX_DEFINES} ${CXX_FLAGS_DEBUG}")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${CXX_FLAGS_DEBUG}")
+    set(CMAKE_CXX_FLAGS_DEBUG ${CXX_FLAGS_DEBUG})
 
     # Release with debug symbols
-    set(CXX_FLAGS_RELWITHDEBINFO "${CXX_BASE_FLAGS}")
+    set(CXX_FLAGS_RELWITHDEBINFO "-O3 -g -Werror ${CXX_BASE_FLAGS}")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
         "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} ${CXX_FLAGS_RELWITHDEBINFO}"
     )
@@ -106,6 +107,7 @@ if(NEURO_EVOLUTION_COMPILER_GCC OR NEURO_EVOLUTION_COMPILER_CLANG)
     set(CMAKE_CXX_FLAGS_MINSIZEREL
         "${CMAKE_CXX_FLAGS_MINSIZEREL} ${CXX_FLAGS_MINSIZEREL}"
     )
+
 
 elseif(NEURO_EVOLUTION_COMPILER_MSVC)
 
