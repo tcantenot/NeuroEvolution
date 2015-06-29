@@ -472,7 +472,7 @@ NeuralNetwork::Nabla NeuralNetwork::backPropagation(
         prime[i] = m_activationFuncPrime(z);
     }
 
-    delta = delta.dot(prime);
+    delta *= prime;
 
     assert(delta.ncols() == 1);
     assert(nabla.weights.size() == m_network.weights.size());
@@ -500,11 +500,11 @@ NeuralNetwork::Nabla NeuralNetwork::backPropagation(
 
         auto const & z = weightedInputsList[idx];
 
-        std::vector<Weight> spv;
-        spv.resize(z.nrows());
+        std::vector<Weight> ap;
+        ap.resize(z.nrows());
         for(auto j = 0u; j < z.nrows(); ++j)
         {
-            spv[j] = m_activationFuncPrime(z[j]);
+            ap[j] = m_activationFuncPrime(z[j]);
         }
 
         auto weights = m_network.weights[idx+1].transpose();
@@ -512,7 +512,7 @@ NeuralNetwork::Nabla NeuralNetwork::backPropagation(
 
         for(auto j = 0u; j < delta.nrows(); ++j)
         {
-            delta[j] *= spv[j];
+            delta[j] *= ap[j];
         }
 
         assert(idx == activationsList.size()-i-1);
@@ -536,6 +536,12 @@ NeuralNetwork::Weights NeuralNetwork::costDerivative(
     std::vector<Weight> const & expectedOutputs
 )
 {
+    assert(m_shape[m_shape.size() - 1] == expectedOutputs.size() &&
+        "The number of expected outputs does not match the shape of the neural network"
+    );
+
+    assert(activations.nrows() == expectedOutputs.size());
+
     Weights cd(expectedOutputs.size(), 1);
 
     for(auto i = 0u; i < expectedOutputs.size(); ++i)
