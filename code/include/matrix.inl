@@ -150,7 +150,6 @@ Matrix<T> Matrix<T>::dot(Matrix<T> const & mat) const
     #pragma omp parallel
     #endif
     {
-
         uint32_t i, j, k;
         #if NEURO_EVOLUTION_OMP_MATRIX
         #pragma omp for
